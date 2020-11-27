@@ -1,14 +1,14 @@
 const articlesRouter = require("express").Router();
+const {
+  getArticles,
+  createArticle,
+  deleteArticle,
+} = require("../controllers/articlesController");
 
-articlesRouter.get("/articles",
-// callback get articles controller
-)
+articlesRouter.get("/articles", getArticles);
 
-articlesRouter.post("/articles",
-// creates an article with the passed
-//  keyword, title, text, date, source, link, and image in the body
-)
+articlesRouter.post("/articles", createArticle);
 
-articlesRouter.delete("/articles/articleId",
-// deletes the stored article by _id
-)
+articlesRouter.delete("/articles/:articleId", deleteArticle);
+
+module.exports = { articlesRouter };

@@ -21,3 +21,15 @@ const userSchema = new mongoose.Schema({
     type: String,
   },
 });
+
+userSchema.statics.findByCredentials = function (email, password) {
+  return this.findOne({ email })
+    .select("+password")
+    .then((user) => {
+      if (!user) {
+        // return error couldn't find user
+      }
+    });
+};
+
+module.exports = mongoose.model("user", userSchema);
