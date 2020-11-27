@@ -29,6 +29,12 @@ userSchema.statics.findByCredentials = function (email, password) {
       if (!user) {
         // return error couldn't find user
       }
+      bcrypt.compare(password, user.password).then((matched) => {
+        if (!matched) {
+          // return error invalid email/password
+        }
+        return user;
+      });
     });
 };
 

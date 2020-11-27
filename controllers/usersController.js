@@ -22,8 +22,21 @@ const createUser = (req, res, next) => {
 };
 
 const login = (req, res, next) => {
-  const {email, password} = req.body;
-  User.find
+  const { email, password } = req.body;
+
+  User.findByCredentials(email, password).then((user) => {
+    if (!user) {
+      // return error invalid email/password
+    }
+    const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: "7d" });
+
+    res.cookie("jwt", token, {
+      maxAge: 3600000 * 24 * 7,
+
+      httpOnly: true,
+    });
+    res.send(token);
+  });
 };
 
 const getCurrentUser = (req, res, next) => {
