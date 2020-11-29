@@ -1,15 +1,15 @@
 const jwt = require("jsonwebtoken");
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 const auth = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    // return error
     res.status(401).send({ message: "authorization required" });
   }
 
   const token = authorization.replace("Bearer ", "");
-
   let payload;
 
   try {

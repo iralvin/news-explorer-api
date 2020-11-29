@@ -12,8 +12,6 @@ const getArticles = (req, res, next) => {
     .catch(next);
 };
 
-// # creates an article with the passed
-// # keyword, title, text, date, source, link, and image in the body
 const createArticle = (req, res, next) => {
   Article.create({ keyword, title, text, date, source, link, image })
     .then((article) => {
@@ -25,8 +23,6 @@ const createArticle = (req, res, next) => {
     .catch(next);
 };
 
-// # deletes the stored article by _id
-// DELETE /articles/articleId
 const deleteArticle = (req, res, next) => {
   const { articleId } = req.params;
   Article.findOne({ _id: articleId })

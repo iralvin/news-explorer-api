@@ -1,14 +1,52 @@
 const articlesRouter = require("express").Router();
+const { celebrate, Joi } = require("celebrate");
+
 const {
   getArticles,
   createArticle,
   deleteArticle,
 } = require("../controllers/articlesController");
 
-articlesRouter.get("/articles", getArticles);
+articlesRouter.get(
+  "/articles",
+  celebrate({
+    headers: Joi.object()
+      .keys({
+        authorization: Joi.string().required(),
+      })
+      .unknown(true),
+  }),
+  getArticles
+);
 
-articlesRouter.post("/articles", createArticle);
+articlesRouter.post(
+  "/articles",
+  celebrate({
+    headers: Joi.object().keys({
+      authorization: Joi.string().required(),
+    }),
+    body: Joi.object().keys({
+      title: Joi.string().required(),
+      text: Joi.string().required(),
+      link: Joi.string().required(),
+    }),
+  }),
+  createArticle
+);
 
-articlesRouter.delete("/articles/:articleId", deleteArticle);
+articlesRouter.delete(
+  "/articles/:articleId",
+  celebrate({
+    headers: Joi.object()
+      .keys({
+        authorization: Joi.string().required(),
+      })
+      .unknown(true),
+    params: Joi.object().keys({
+      articleId: Joi.string().required(),
+    }),
+  }),
+  deleteArticle
+);
 
 module.exports = { articlesRouter };

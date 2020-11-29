@@ -27,9 +27,6 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
 
   User.findByCredentials(email, password).then((user) => {
-    if (!user) {
-      // return error invalid email/password
-    }
     const token = jwt.sign(
       { _id: user._id },
       NODE_ENV === "production" ? JWT_SECRET : "secret-dev-key",

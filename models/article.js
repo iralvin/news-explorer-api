@@ -17,6 +17,7 @@ const articleSchema = new mongoose.Schema({
   date: {
     required: true,
     type: String,
+    default: Date.now,
   },
   source: {
     required: true,
@@ -25,6 +26,12 @@ const articleSchema = new mongoose.Schema({
   link: {
     required: true,
     type: String,
+    validate: {
+      validator(v) {
+        return /^http(s)?:\/\/[\w.-]+(?:\.[\w.-]+)+[\w-./?#&=]+$/gi.test(v);
+      },
+      message: (props) => `${props.value} is not a valid URL!`,
+    },
   },
   image: {
     required: true,
