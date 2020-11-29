@@ -38,8 +38,6 @@ const deleteArticle = (req, res, next) => {
   Article.findOne({ _id: articleId })
     .select("+owner")
     .then((article) => {
-      console.log(article);
-      console.log(req.user._id);
       if (!article) {
         throw new NotFoundError("Failed to find card data", 404);
       }

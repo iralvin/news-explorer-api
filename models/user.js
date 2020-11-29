@@ -31,14 +31,10 @@ userSchema.statics.findByCredentials = function (email, password) {
   return this.findOne({ email })
     .select("+password")
     .then((user) => {
-      console.log("fiasdf");
-
       if (!user) {
         console.log("mismatch user");
         throw new NotFoundError("Incorrect email/password", 401);
       }
-      console.log("fiasdf");
-      console.log(user);
 
       return bcrypt.compare(password, user.password).then((matched) => {
         console.log("asdf");

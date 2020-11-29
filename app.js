@@ -9,18 +9,19 @@ const mongoose = require("mongoose");
 const { celebrate, Joi, errors } = require("celebrate");
 const cors = require("cors");
 const helmet = require("helmet");
-const {limiter, errorMessage} = require("./util/constants");
+const { limiter, errorMessage } = require("./util/constants");
 
 const { createUser, login } = require("./controllers/usersController");
 const { auth } = require("./middleware/auth");
 const { usersRouter } = require("./routes/users");
 const { articlesRouter } = require("./routes/articles");
 const { requestLogger, errorLogger } = require("./middleware/logger");
+const { MONGO_DATABASE } = process.env;
 
 const app = express();
 app.use(helmet());
 
-mongoose.connect("mongodb://localhost:27017/articles", {
+mongoose.connect(MONGO_DATABASE, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
@@ -42,8 +43,27 @@ app.use(cookieParser());
 
 app.use(requestLogger);
 
-app.post("/signin", login);
-app.post("/signup", createUser);
+app.post(
+  "/signin",
+  celebrate({
+    body: Joi.object().keys({
+      email: Joi.string().required(),
+      password: Joi.string().required(),
+    }),
+  }),
+  login
+);
+app.post(
+  "/signup",
+  celebrate({
+    body: Joi.object().keys({
+      email: Joi.string().required(),
+      password: Joi.string().required(),
+      name: Joi.string().required(),
+    }),
+  }),
+  createUser
+);
 
 app.use(auth);
 
