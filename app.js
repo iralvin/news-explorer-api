@@ -23,6 +23,29 @@ mongoose.connect("mongodb://localhost:27017/articles", {
   useUnifiedTopology: true,
 });
 
+
+const rateLimit = require("express-rate-limit");
+
+// Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
+// see https://expressjs.com/en/guide/behind-proxies.html
+// app.set('trust proxy', 1);
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
+
+//  apply to all requests
+app.use(limiter);
+
+
+
+
+
+
+
+
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 
@@ -41,7 +64,7 @@ app.use(errors());
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
-  res.statusCode(statusCode).send({
+  res.status(statusCode).send({
     message: statusCode === 500 ? "Server error occurred" : message,
   });
 });

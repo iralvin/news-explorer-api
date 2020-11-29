@@ -13,7 +13,17 @@ const getArticles = (req, res, next) => {
 };
 
 const createArticle = (req, res, next) => {
-  Article.create({ keyword, title, text, date, source, link, image })
+  const { keyword, title, text, date, source, link, image } = req.body;
+  Article.create({
+    keyword,
+    title,
+    text,
+    date,
+    source,
+    link,
+    image,
+    owner: req.user._id,
+  })
     .then((article) => {
       if (!article) {
         throw new NotFoundError("Failed to create article", 400);
@@ -31,13 +41,9 @@ const deleteArticle = (req, res, next) => {
         throw new NotFoundError("Failed to find card data", 404);
       }
 
-      if (article.owner === req.user._id) {
-        Article.deleteOne({ _id: articleId }).then((article) => {
-          res.send({ message: "successfully deleted article" });
-        });
-      } else {
-        throw new NotFoundError("User not authorized to delete card", 404);
-      }
+      Article.deleteOne({ _id: articleId }).then((article) => {
+        res.send({ message: "successfully deleted article" });
+      });
     })
     .catch(next);
 };

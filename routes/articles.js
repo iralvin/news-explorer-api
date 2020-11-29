@@ -22,13 +22,18 @@ articlesRouter.get(
 articlesRouter.post(
   "/articles",
   celebrate({
-    headers: Joi.object().keys({
-      authorization: Joi.string().required(),
-    }),
+    headers: Joi.object()
+      .keys({
+        authorization: Joi.string().required(),
+      })
+      .unknown(true),
     body: Joi.object().keys({
+      keyword: Joi.string().required(),
       title: Joi.string().required(),
       text: Joi.string().required(),
       link: Joi.string().required(),
+      image: Joi.string().required(),
+      source: Joi.string().required(),
     }),
   }),
   createArticle
