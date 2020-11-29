@@ -2,7 +2,7 @@ const Article = require("../models/article");
 const NotFoundError = require("../error/NotFoundError");
 
 const getArticles = (req, res, next) => {
-  Article.find({})
+  Article.find({owner: req.user._id})
     .then((articles) => {
       if (!articles) {
         throw new NotFoundError("Failed to get articles", 500);
@@ -36,14 +36,21 @@ const createArticle = (req, res, next) => {
 const deleteArticle = (req, res, next) => {
   const { articleId } = req.params;
   Article.findOne({ _id: articleId })
+    .select("+owner")
     .then((article) => {
+      console.log(article);
+      console.log(req.user._id);
       if (!article) {
         throw new NotFoundError("Failed to find card data", 404);
       }
 
-      Article.deleteOne({ _id: articleId }).then((article) => {
-        res.send({ message: "successfully deleted article" });
-      });
+      if (article.owner == req.user._id) {
+        Article.deleteOne({ _id: articleId }).then((article) => {
+          res.send({ message: "successfully deleted article" });
+        });
+      } else {
+        throw new NotFoundError("User not authorized to delete card", 404);
+      }
     })
     .catch(next);
 };
