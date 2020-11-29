@@ -8,6 +8,8 @@ const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const { celebrate, Joi, errors } = require("celebrate");
 const cors = require("cors");
+const helmet = require("helmet");
+const {limiter, errorMessage} = require("./util/constants");
 
 const { createUser, login } = require("./controllers/usersController");
 const { auth } = require("./middleware/auth");
@@ -16,6 +18,7 @@ const { articlesRouter } = require("./routes/articles");
 const { requestLogger, errorLogger } = require("./middleware/logger");
 
 const app = express();
+app.use(helmet());
 
 mongoose.connect("mongodb://localhost:27017/articles", {
   useNewUrlParser: true,
@@ -31,6 +34,8 @@ app.all("*", function (req, res, next) {
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   next();
 });
+
+app.use(limiter);
 
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -48,12 +53,7 @@ app.use("/", articlesRouter);
 app.use(errorLogger);
 app.use(errors());
 
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-  return res.status(statusCode).send({
-    message: statusCode === 500 ? "Server error occurred" : message,
-  });
-});
+app.use(errorMessage);
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}`);
