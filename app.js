@@ -21,7 +21,7 @@ const { MONGO_DATABASE } = process.env;
 const app = express();
 app.use(helmet());
 
-mongoose.connect("mongodb://localhost:27017/articles", {
+mongoose.connect(MONGO_DATABASE, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
