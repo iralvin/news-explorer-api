@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const NotFoundError = require("../error/NotFoundError");
+const PostError = require("../error/PostError");
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -16,7 +17,7 @@ const createUser = (req, res, next) => {
         name,
       }).then((user) => {
         if (!user) {
-          throw new NotFoundError(`Failed to create new user`, 400);
+          throw new PostError(`Failed to create new user`);
         }
         res.send(user);
       });
@@ -50,7 +51,7 @@ const getCurrentUser = (req, res, next) => {
   User.findOne({ _id: req.user._id })
     .then((user) => {
       if (!user) {
-        throw new NotFoundError("Failed to find current user", 404);
+        throw new NotFoundError("Failed to find current user");
       }
       return res.send(user);
     })

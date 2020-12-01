@@ -1,22 +1,21 @@
 require("dotenv").config();
 
-const { PORT = 3000 } = process.env;
+const {
+  PORT = 3000,
+  MONGO_DATABASE = "mongodb://localhost:27017/dev-news",
+} = process.env;
 
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
-const { celebrate, Joi, errors } = require("celebrate");
+const { errors } = require("celebrate");
 const cors = require("cors");
 const helmet = require("helmet");
 const { limiter, errorMessage } = require("./util/constants");
 
-const { createUser, login } = require("./controllers/usersController");
-const { auth } = require("./middleware/auth");
-const { usersRouter } = require("./routes/users");
-const { articlesRouter } = require("./routes/articles");
+const { mainRouter } = require("./routes/index");
 const { requestLogger, errorLogger } = require("./middleware/logger");
-const { MONGO_DATABASE } = process.env;
 
 const app = express();
 app.use(helmet());
@@ -43,32 +42,7 @@ app.use(cookieParser());
 
 app.use(requestLogger);
 
-app.post(
-  "/signin",
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().required(),
-      password: Joi.string().required(),
-    }),
-  }),
-  login
-);
-app.post(
-  "/signup",
-  celebrate({
-    body: Joi.object().keys({
-      email: Joi.string().required(),
-      password: Joi.string().required(),
-      name: Joi.string().required(),
-    }),
-  }),
-  createUser
-);
-
-app.use(auth);
-
-app.use("/", usersRouter);
-app.use("/", articlesRouter);
+app.use(mainRouter);
 
 app.use(errorLogger);
 app.use(errors());

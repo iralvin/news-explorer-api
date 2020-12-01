@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const NotAuthError = require("../error/NotAuthError")
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -6,7 +7,8 @@ const auth = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    return res.status(401).send({ message: "authorization required" });
+    const err = new NotAuthError("Not authorized");
+    next(err);
   }
 
   const token = authorization.replace("Bearer ", "");
@@ -18,8 +20,7 @@ const auth = (req, res, next) => {
       NODE_ENV === "production" ? JWT_SECRET : "dev-secret"
     );
   } catch (e) {
-    const err = new Error("Authorization required - failed to verify token");
-    err.statusCode = 401;
+    const err = new NotAuthError("Not authorized");
     next(err);
   }
 
