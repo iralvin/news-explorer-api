@@ -5,4 +5,4 @@ class NotAuthError extends Error {
   }
 }
 
-export default NotAuthError;
+module.exports = NotAuthError;

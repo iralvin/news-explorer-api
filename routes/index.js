@@ -1,10 +1,10 @@
 const mainRouter = require("express").Router();
 const { celebrate, Joi, errors } = require("celebrate");
 
-const { createUser, login } = require("./controllers/usersController");
-const { auth } = require("./middleware/auth");
-const { usersRouter } = require("./routes/users");
-const { articlesRouter } = require("./routes/articles");
+const { createUser, login } = require("../controllers/usersController");
+const { auth } = require("../middleware/auth");
+const { usersRouter } = require("./users");
+const { articlesRouter } = require("./articles");
 
 mainRouter.post(
   "/signin",
@@ -33,4 +33,4 @@ mainRouter.use(auth);
 mainRouter.use("/", usersRouter);
 mainRouter.use("/", articlesRouter);
 
-module.exports = {mainRouter}
+module.exports = { mainRouter };

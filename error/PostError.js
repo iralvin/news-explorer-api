@@ -5,4 +5,4 @@ class PostError extends Error {
   }
 }
 
-export default PostError;
+module.exports = PostError;
