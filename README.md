@@ -4,5 +4,5 @@ This is the backend API for a news search app that is built using ReactJS. It is
 
  API Link: 
 
- https://www.api.alvin.students.nomoreparties.site/
+ https://www.api.alvin.students.nomoreparties.site/  
  https://api.alvin.students.nomoreparties.site/
