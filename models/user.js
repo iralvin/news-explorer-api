@@ -1,8 +1,9 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
-const bcrypt = require("bcrypt");
+/* eslint-disable func-names */
+const mongoose = require('mongoose');
+const validator = require('validator');
+const bcrypt = require('bcrypt');
 
-const NotFoundError = require("../error/NotFoundError");
+const LoginError = require('../error/LoginError');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -11,7 +12,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator: validator.isEmail,
-      message: "",
+      message: '',
     },
   },
   password: {
@@ -29,22 +30,28 @@ const userSchema = new mongoose.Schema({
 
 userSchema.statics.findByCredentials = function (email, password) {
   return this.findOne({ email })
-    .select("+password")
+    .select('+password')
     .then((user) => {
       if (!user) {
-        console.log("mismatch user");
-        throw new NotFoundError("Incorrect email/password", 401);
+        throw new LoginError();
       }
 
       return bcrypt.compare(password, user.password).then((matched) => {
-        console.log("asdf");
         if (!matched) {
-          console.log("mismatch password");
-          throw new NotFoundError("Incorrect email/password", 401);
+          throw new LoginError();
         }
         return user;
       });
     });
 };
 
-module.exports = mongoose.model("user", userSchema);
+userSchema.statics.checkIfUserExists = function (email) {
+  return this.find({ email }).then((user) => {
+    if (user.length === 0) {
+      return false;
+    }
+    return true;
+  });
+};
+
+module.exports = mongoose.model('user', userSchema);

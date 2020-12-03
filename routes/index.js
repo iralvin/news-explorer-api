@@ -1,23 +1,23 @@
-const mainRouter = require("express").Router();
-const { celebrate, Joi, errors } = require("celebrate");
+const mainRouter = require('express').Router();
+const { celebrate, Joi } = require('celebrate');
 
-const { createUser, login } = require("../controllers/usersController");
-const { auth } = require("../middleware/auth");
-const { usersRouter } = require("./users");
-const { articlesRouter } = require("./articles");
+const { createUser, login } = require('../controllers/usersController');
+const { auth } = require('../middleware/auth');
+const { usersRouter } = require('./users');
+const { articlesRouter } = require('./articles');
 
 mainRouter.post(
-  "/signin",
+  '/signin',
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().required(),
       password: Joi.string().required(),
     }),
   }),
-  login
+  login,
 );
 mainRouter.post(
-  "/signup",
+  '/signup',
   celebrate({
     body: Joi.object().keys({
       email: Joi.string().required(),
@@ -25,12 +25,12 @@ mainRouter.post(
       name: Joi.string().required(),
     }),
   }),
-  createUser
+  createUser,
 );
 
 mainRouter.use(auth);
 
-mainRouter.use("/", usersRouter);
-mainRouter.use("/", articlesRouter);
+mainRouter.use('/', usersRouter);
+mainRouter.use('/', articlesRouter);
 
 module.exports = { mainRouter };

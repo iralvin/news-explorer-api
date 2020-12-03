@@ -1,14 +1,14 @@
-const articlesRouter = require("express").Router();
-const { celebrate, Joi } = require("celebrate");
+const articlesRouter = require('express').Router();
+const { celebrate, Joi } = require('celebrate');
 
 const {
   getArticles,
   createArticle,
   deleteArticle,
-} = require("../controllers/articlesController");
+} = require('../controllers/articlesController');
 
 articlesRouter.get(
-  "/articles",
+  '/articles',
   celebrate({
     headers: Joi.object()
       .keys({
@@ -16,11 +16,11 @@ articlesRouter.get(
       })
       .unknown(true),
   }),
-  getArticles
+  getArticles,
 );
 
 articlesRouter.post(
-  "/articles",
+  '/articles',
   celebrate({
     headers: Joi.object()
       .keys({
@@ -36,11 +36,11 @@ articlesRouter.post(
       source: Joi.string().required(),
     }),
   }),
-  createArticle
+  createArticle,
 );
 
 articlesRouter.delete(
-  "/articles/:articleId",
+  '/articles/:articleId',
   celebrate({
     headers: Joi.object()
       .keys({
@@ -51,7 +51,7 @@ articlesRouter.delete(
       articleId: Joi.string().required(),
     }),
   }),
-  deleteArticle
+  deleteArticle,
 );
 
 module.exports = { articlesRouter };

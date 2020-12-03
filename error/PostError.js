@@ -1,6 +1,7 @@
 class PostError extends Error {
-  constructor(message) {
-    super(message);
+  constructor() {
+    super();
+    this.message = 'Failed to create data';
     this.statusCode = 409;
   }
 }

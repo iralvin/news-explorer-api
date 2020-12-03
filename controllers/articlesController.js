@@ -1,12 +1,14 @@
-const Article = require("../models/article");
-const NotFoundError = require("../error/NotFoundError");
-const PostError = require("../error/PostError");
+/* eslint-disable eqeqeq */
+const Article = require('../models/article');
+const NotFoundError = require('../error/NotFoundError');
+const NotAuthError = require('../error/NotAuthError');
+const PostError = require('../error/PostError');
 
 const getArticles = (req, res, next) => {
   Article.find({ owner: req.user._id })
     .then((articles) => {
       if (!articles) {
-        throw new NotFoundError("Failed to get articles");
+        throw new NotFoundError();
       }
       res.send(articles);
     })
@@ -14,7 +16,9 @@ const getArticles = (req, res, next) => {
 };
 
 const createArticle = (req, res, next) => {
-  const { keyword, title, text, date, source, link, image } = req.body;
+  const {
+    keyword, title, text, date, source, link, image,
+  } = req.body;
   Article.create({
     keyword,
     title,
@@ -27,7 +31,7 @@ const createArticle = (req, res, next) => {
   })
     .then((article) => {
       if (!article) {
-        throw new PostError("Failed to create article");
+        throw new PostError();
       }
       res.send(article);
     })
@@ -37,18 +41,18 @@ const createArticle = (req, res, next) => {
 const deleteArticle = (req, res, next) => {
   const { articleId } = req.params;
   Article.findOne({ _id: articleId })
-    .select("+owner")
+    .select('+owner')
     .then((article) => {
       if (!article) {
-        throw new NotFoundError("Failed to find card data", 404);
+        throw new NotFoundError();
       }
 
       if (article.owner == req.user._id) {
-        Article.deleteOne({ _id: articleId }).then((article) => {
-          res.send({ message: "successfully deleted article" });
+        Article.deleteOne({ _id: articleId }).then(() => {
+          res.send({ message: 'successfully deleted article' });
         });
       } else {
-        throw new NotFoundError("User not authorized to delete card");
+        throw new NotAuthError();
       }
     })
     .catch(next);

@@ -1,9 +1,9 @@
-const usersRouter = require("express").Router();
-const { celebrate, Joi, CelebrateError } = require("celebrate");
-const { getCurrentUser } = require("../controllers/usersController");
+const usersRouter = require('express').Router();
+const { celebrate, Joi } = require('celebrate');
+const { getCurrentUser } = require('../controllers/usersController');
 
 usersRouter.get(
-  "/users/me",
+  '/users/me',
   celebrate({
     headers: Joi.object()
       .keys({
@@ -11,7 +11,7 @@ usersRouter.get(
       })
       .unknown(true),
   }),
-  getCurrentUser
+  getCurrentUser,
 );
 
 module.exports = { usersRouter };

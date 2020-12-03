@@ -1,6 +1,7 @@
 class NotAuthError extends Error {
-  constructor(message) {
-    super(message);
+  constructor() {
+    super();
+    this.message = 'Not authorized';
     this.statusCode = 401;
   }
 }
