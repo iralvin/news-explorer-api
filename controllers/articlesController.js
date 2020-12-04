@@ -1,8 +1,8 @@
 /* eslint-disable eqeqeq */
 const Article = require('../models/article');
-const NotFoundError = require('../error/NotFoundError');
-const NotAuthError = require('../error/NotAuthError');
-const PostError = require('../error/PostError');
+const NotFoundError = require('../errors/NotFoundError');
+const NotAuthError = require('../errors/NotAuthError');
+const PostError = require('../errors/PostError');
 
 const getArticles = (req, res, next) => {
   Article.find({ owner: req.user._id })
@@ -17,13 +17,12 @@ const getArticles = (req, res, next) => {
 
 const createArticle = (req, res, next) => {
   const {
-    keyword, title, text, date, source, link, image,
+    keyword, title, text, source, link, image,
   } = req.body;
   Article.create({
     keyword,
     title,
     text,
-    date,
     source,
     link,
     image,

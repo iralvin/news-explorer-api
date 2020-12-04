@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const NotFoundError = require('../error/NotFoundError');
-const PostError = require('../error/PostError');
+const NotFoundError = require('../errors/NotFoundError');
+const PostError = require('../errors/PostError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -24,7 +24,14 @@ const createUser = (req, res, next) => {
             if (!user) {
               throw new PostError();
             }
-            res.send({ message: 'Account successfully created' });
+            res.send({
+              message: 'Account successfully created',
+              user: {
+                name: user.name,
+                email: user.email,
+                _id: user._id,
+              },
+            });
           });
         })
         .catch(next);
@@ -40,7 +47,7 @@ const login = (req, res, next) => {
       const token = jwt.sign(
         { _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'secret-dev-key',
-        { expiresIn: '7d' }
+        { expiresIn: '7d' },
       );
 
       res.cookie('jwt', token, {

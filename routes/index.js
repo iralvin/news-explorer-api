@@ -5,6 +5,7 @@ const { createUser, login } = require('../controllers/usersController');
 const { auth } = require('../middleware/auth');
 const { usersRouter } = require('./users');
 const { articlesRouter } = require('./articles');
+const pageNotFound = require('./pageNotFound');
 
 mainRouter.post(
   '/signin',
@@ -32,5 +33,6 @@ mainRouter.use(auth);
 
 mainRouter.use('/', usersRouter);
 mainRouter.use('/', articlesRouter);
+mainRouter.use('/', pageNotFound);
 
 module.exports = { mainRouter };

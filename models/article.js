@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 const mongoose = require('mongoose');
-// const validator = require('validator');
+const validator = require('validator');
 
 const articleSchema = new mongoose.Schema({
   keyword: {
