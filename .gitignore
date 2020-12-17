@@ -1,0 +1,4 @@
+node_modules
+.env
+util/error.log
+util/requests.log
