@@ -8,7 +8,7 @@ const {
 } = require('../controllers/articlesController');
 
 articlesRouter.get(
-  '/articles',
+  '/articles/:userId',
   celebrate({
     headers: Joi.object()
       .keys({
@@ -20,7 +20,7 @@ articlesRouter.get(
 );
 
 articlesRouter.post(
-  '/articles',
+  '/articles/:userId',
   celebrate({
     headers: Joi.object()
       .keys({
