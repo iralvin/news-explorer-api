@@ -40,7 +40,7 @@ articlesRouter.post(
 );
 
 articlesRouter.delete(
-  '/articles/:articleId',
+  '/articles/:userId/:articleId',
   celebrate({
     headers: Joi.object()
       .keys({
