@@ -32,7 +32,7 @@ articlesRouter.post(
       title: Joi.string().required(),
       text: Joi.string().required(),
       link: Joi.string().required(),
-      image: Joi.string().required(),
+      image: Joi.string(),
       source: Joi.string().required(),
     }),
   }),
