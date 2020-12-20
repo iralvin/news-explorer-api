@@ -35,7 +35,7 @@ const articleSchema = new mongoose.Schema({
     },
   },
   image: {
-    required: true,
+    // required: true,
     type: String,
     validate: {
       validator(v) {
