@@ -16,7 +16,7 @@ articlesRouter.get(
       })
       .unknown(true),
   }),
-  getArticles,
+  getArticles
 );
 
 articlesRouter.post(
@@ -36,7 +36,7 @@ articlesRouter.post(
       source: Joi.string().required(),
     }),
   }),
-  createArticle,
+  createArticle
 );
 
 articlesRouter.delete(
@@ -48,10 +48,11 @@ articlesRouter.delete(
       })
       .unknown(true),
     params: Joi.object().keys({
+      userId: Joi.string().required(),
       articleId: Joi.string().required(),
     }),
   }),
-  deleteArticle,
+  deleteArticle
 );
 
 module.exports = { articlesRouter };
