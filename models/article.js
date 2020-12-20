@@ -36,6 +36,7 @@ const articleSchema = new mongoose.Schema({
   },
   image: {
     // required: true,
+    default: "https://s3.amazonaws.com/speedsport-news/speedsport-news/wp-content/uploads/2018/07/01082232/image-not-found.png",
     type: String,
     validate: {
       validator(v) {
