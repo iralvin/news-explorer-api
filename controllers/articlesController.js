@@ -16,10 +16,9 @@ const getArticles = (req, res, next) => {
 };
 
 const createArticle = (req, res, next) => {
-  const {
-    keyword, title, text, source, link, image,
-  } = req.body;
+  const { keyword, title, text, source, link, image, date } = req.body;
   Article.create({
+    date,
     keyword,
     title,
     text,

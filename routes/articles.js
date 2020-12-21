@@ -34,6 +34,7 @@ articlesRouter.post(
       link: Joi.string().required(),
       image: Joi.string(),
       source: Joi.string().required(),
+      date: Joi.string().required(),
     }),
   }),
   createArticle
